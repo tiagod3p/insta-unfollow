@@ -11,3 +11,9 @@ password = account['password']
 L = instaloader.Instaloader()
 L.login(username, password)
 profile = instaloader.Profile.from_username(L.context, username)
+
+following = list(
+    map(lambda x: x.username, list(profile.get_followees())))
+
+followers = list(
+    map(lambda x: x.username, list(profile.get_followers())))
