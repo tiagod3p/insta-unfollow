@@ -20,3 +20,6 @@ followers = list(
 
 ## used reversed to list from olders to newers
 dont_follow_back = list(reversed(list(filter(lambda username: username not in followers, following))))
+
+with open('usernames.json', 'w', encoding='utf-8') as f:
+    json.dump(dont_follow_back, f, ensure_ascii=False, indent=2)
