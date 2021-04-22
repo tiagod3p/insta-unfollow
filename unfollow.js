@@ -3,6 +3,12 @@ const puppeteer = require("puppeteer");
 const usersToUnfollow = require("./usernames.json");
 const account = require("./env.json");
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const getRandomTime = (array) => {
+  return array[Math.floor(Math.random() * array.length)];
+};
+
 (async () => {
   const browser = await puppeteer.launch({ headless: false }); // set true to run on background
   const page = await browser.newPage();
@@ -24,10 +30,9 @@ const account = require("./env.json");
   await Promise.all([page.waitForSelector(".eyXLr.wUAXj")]);
 
   let count = 1;
-  const QUANTITY_OF_USERS_TO_UNFOLLOW = usersToUnfollow.length
+  const QUANTITY_OF_USERS_TO_UNFOLLOW = usersToUnfollow.length;
   for (username of usersToUnfollow) {
     try {
-
       await page.goto(`https://instagram.com/${username}`);
       await Promise.all([
         page.waitForSelector("._5f5mN.-fzfL._6VtSN.yZn4P"),
@@ -39,6 +44,8 @@ const account = require("./env.json");
         page.click(".aOOlW.-Cab_"),
       ]);
 
+      const time = getRandomTime([5000, 10000, 15000, 20000]);
+
       console.log(`
       Unfollowing ${username}.
       WAITING ${time}ms to proceed to next unfollow.
@@ -46,6 +53,7 @@ const account = require("./env.json");
       ${QUANTITY_OF_USERS_TO_UNFOLLOW - count} remaining.`);
 
       count++;
+      await sleep(time);
     } catch (err) {
       console.log(err.message || err);
     }
