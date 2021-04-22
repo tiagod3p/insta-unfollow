@@ -1,2 +1,2 @@
-python3 scrape.py
+python scrape.py
 node unfollow.js
